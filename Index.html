@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Valentine?</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #ff5f8a, #ff85a2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Desktop Block */
+    .desktop-warning {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .container { display: none; }
+      .desktop-warning { display: block; }
+    }
+
+    .container {
+      background: white;
+      width: 90%;
+      max-width: 380px;
+      padding: 30px 20px 40px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+
+    button {
+      width: 130px;
+      padding: 15px;
+      font-size: 20px;
+      border-radius: 40px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #yesBtn {
+      background: #ff2f6e;
+      color: white;
+      margin-right: 10px;
+    }
+
+    #noBtn {
+      background: #ddd;
+      position: fixed;
+      left: 50%;
+      top: 60%;
+      transform: translate(-50%, -50%);
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #gif {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #gif img {
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .shy-text {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* Fake NO screen */
+    .fake-no {
+      display: none;
+      background: white;
+      padding: 40px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    .fake-no h2 {
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="desktop-warning">
+    📱 Open this on your phone<br><br>
+    You’re missing the fun 😈
+  </div>
+
+  <div class="container" id="main">
+    <h1>Perla will you be my valentine? 💖</h1>
+
+    <button id="yesBtn">YES</button>
+    <button id="noBtn">NO</button>
+
+    <div id="message"></div>
+
+    <div id="gif">
+      <!-- Extra unhinged, mind-blown GIF -->
+      <img src="https://media.giphy.com/media/l0MYEqEzwMWFCg8rm/giphy.gif" alt="Mind blown">
+    </div>
+  </div>
+
+  <div class="fake-no" id="fakeNo">
+    <h2>Oops… 😬</h2>
+    <p>You *thought* you clicked NO.</p>
+    <p>Try again 😈</p>
+  </div>
+
+  <div class="shy-text">NO seems a bit shy 😈</div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const message = document.getElementById("message");
+    const gif = document.getElementById("gif");
+    const main = document.getElementById("main");
+    const fakeNo = document.getElementById("fakeNo");
+
+    let speedMultiplier = 1;
+
+    function vibrate() {
+      if (navigator.vibrate) {
+        navigator.vibrate(100);
+      }
+    }
+
+    function moveNoButton() {
+      speedMultiplier += 0.3;
+
+      const padding = 20;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.transition = `all ${0.25 / speedMultiplier}s linear`;
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+
+      vibrate();
+    }
+
+    function fakeNoScreen() {
+      main.style.display = "none";
+      fakeNo.style.display = "block";
+
+      setTimeout(() => {
+        fakeNo.style.display = "none";
+        main.style.display = "block";
+        moveNoButton();
+      }, 1500);
+    }
+
+    // Activate NO chaos after 3 seconds
+    setTimeout(() => {
+      noBtn.addEventListener("touchstart", moveNoButton);
+      noBtn.addEventListener("mouseover", moveNoButton);
+      noBtn.addEventListener("click", fakeNoScreen);
+    }, 3000);
+
+    yesBtn.addEventListener("click", () => {
+      message.innerHTML = "YaY!!!!! 🤯💘 BEST. CHOICE. EVER.";
+      gif.style.display = "block";
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+      vibrate();
+    });
+  </script>
+
+</body>
+</html>
